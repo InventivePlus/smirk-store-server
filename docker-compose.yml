@@ -1,0 +1,26 @@
+version: "1.0"
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    restart: always
+    volumes:
+      - .postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: medusa
+      PGDATA: /var/lib/postgresql/data/medusa/
+    ports:
+      - "5432:5432"
+  redis:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - .redis_data:/data
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
+    environment:
+      REDIS_PASSWORD: redispassword
+    ports:
+      - "6379:6379"
+volumes:
+    postgres_data:
+    redis_data:
